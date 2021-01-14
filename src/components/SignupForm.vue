@@ -17,27 +17,18 @@
             <label>Terms and Conditions</label>
         </div>
 
-        <div>
-            <input type="checkbox" value="Thor" v-model="names">
-            <label>Thor</label>
+        <label>Skills:</label>
+        <input type="text" v-model="tempSkill" @keyup="addSkill">
+        <div v-for="skill in skills" :key="skill" class="pill">
+            {{ skill }}
         </div>
 
-        <div>
-            <input type="checkbox" value="Hulk" v-model="names">
-            <label>Hulk</label>
-        </div>
-
-        <div>
-            <input type="checkbox" value="Tony" v-model="names">
-            <label>Tony</label>
-        </div>
     </form>
 
     <p>Email: {{ email }}</p>
     <p>Password: {{ password }}</p>
     <p>Role: {{ role }}</p>
     <p>Terms Accepted: {{ terms }}</p>
-    <p>Names: {{ names }}</p>
 </template>
 
 <script>
@@ -48,7 +39,18 @@ export default {
             password: '',
             role: '',
             terms: false,
-            names: []
+            tempSkill: '',
+            skills: []
+        }
+    },
+    methods: {
+        addSkill(e) {
+            if(e.key === ',' && this.tempSkill){
+                if(!this.skills.includes(this.tempSkill)){
+                    this.skills.push(this.tempSkill)
+                }
+                this.tempSkill = ''
+            }
         }
     }
 }
