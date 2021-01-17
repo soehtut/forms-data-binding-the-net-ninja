@@ -1,10 +1,11 @@
 <template>
-    <form>
+    <form @submit.prevent="handleSubmit">
         <label>Email:</label>
         <input type="email" required="required" v-model="email">
 
         <label>Password:</label>
         <input type="password" required="required" v-model="password">
+        <div v-if="passwordErr" class="error">{{ passwordErr }}</div>
 
         <label>Role:</label>
         <select v-model="role">
@@ -12,23 +13,22 @@
             <option value="web designer">Web Designer</option>
         </select>
 
-        <div>
-            <input type="checkbox" v-model="terms">
-            <label>Terms and Conditions</label>
-        </div>
-
         <label>Skills:</label>
         <input type="text" v-model="tempSkill" @keyup="addSkill">
         <div v-for="skill in skills" :key="skill" class="pill">
             <span @click="deleteSkill(skill)">{{ skill }}</span>
         </div>
 
-    </form>
+        <div>
+            <input type="checkbox" v-model="terms">
+            <label>Terms and Conditions</label>
+        </div>
 
-    <p>Email: {{ email }}</p>
-    <p>Password: {{ password }}</p>
-    <p>Role: {{ role }}</p>
-    <p>Terms Accepted: {{ terms }}</p>
+        <div class="submit">
+            <button>Create an account</button>
+        </div>
+
+    </form>
 </template>
 
 <script>
@@ -40,7 +40,8 @@ export default {
             role: '',
             terms: false,
             tempSkill: '',
-            skills: []
+            skills: [],
+            passwordErr: ''
         }
     },
     methods: {
@@ -56,6 +57,14 @@ export default {
             this.skills = this.skills.filter((item) => {
                 return skill !== item
             })
+        },
+        handleSubmit(e) {
+            this.passwordErr = this.password.length > 5 ? '' : 'Password must be at least 6 chars long'
+            console.log('Email: ' + this.email)
+            console.log('Password: ' + this.password)
+            console.log('Role: ' + this.role)
+            console.log('Skills: ' + this.skills)
+            console.log('Terms Accepted: ' + this.terms)
         }
     }
 }
@@ -106,6 +115,23 @@ export default {
         font-weight: bold;
         color: #777;
         cursor: pointer;
+    }
+    button {
+        background-color: #0b6dff;
+        border: 0;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: white;
+        border-radius: 20px;
+    }
+    .submit {
+        text-align: center;
+    }
+    .error {
+        color: #ff0062;
+        margin-top: 10px;
+        font-size: 0.8em;
+        font-weight: bold;
     }
 </style>
 
